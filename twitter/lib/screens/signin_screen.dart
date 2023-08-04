@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/screens/forgot_password_screen.dart';
-import 'package:twitter/screens/home_screen.dart';
 import 'package:twitter/screens/singup_screen.dart';
+import 'package:twitter/widgets/bar_menu.dart';
 import 'package:twitter/widgets/entry_field.dart';
 import 'package:twitter/widgets/flat_button.dart';
 
@@ -44,10 +44,10 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _navigateToHomeScreen() {
+  void _navigateToBarMenu() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const HomeScreen())
+      MaterialPageRoute(builder: (context) => const BarMenu())
     );
   }
 
@@ -77,7 +77,7 @@ class _SignInState extends State<SignIn> {
                 CustomEntryField(hint: 'Enter password', controller: _passwordController, isPassword: true),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: CustomFlatButton(label: 'Submit', onPressed: _navigateToHomeScreen, fontSize: 40, fontWeight: FontWeight.bold),
+                  child: CustomFlatButton(label: 'Submit', onPressed: _navigateToBarMenu, fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),

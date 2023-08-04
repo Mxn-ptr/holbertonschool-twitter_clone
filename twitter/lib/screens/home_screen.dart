@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twitter/assets/post_data.dart';
+import 'package:twitter/widgets/post_widget.dart';
 import '../widgets/side_bar_menu.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,6 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const SideBarMenu(),
+      body: ListView.builder(
+        itemCount: postList.length,
+        itemBuilder: (context, index) {
+          final post = postList[index];
+          return PostWidget(
+            title: 'Post $index',
+            content: post['content'],
+            userAvatarUrl: post['userAvatarUrl'],
+            userName: post['userName'],
+            isVerified: post['isVerified'],
+            username: post['username'],
+            hoursAgo: post['hoursAgo'],
+            commentsCount: post['commentsCount'],
+            transferCount: post['transferCount'],
+            loveCount: post['loveCount'],
+          );
+        },
+      ),
     );
   }
 }
