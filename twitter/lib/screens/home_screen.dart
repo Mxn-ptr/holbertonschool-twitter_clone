@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/assets/post_data.dart';
+import 'package:twitter/providers/auth_state.dart';
+import 'package:twitter/screens/signin_screen.dart';
 import 'package:twitter/widgets/post_widget.dart';
 import '../widgets/side_bar_menu.dart';
 
@@ -13,6 +15,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // GlobalKey to control the Scaffold state
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    final isLoggedIn = Auth().checkAuth();
+    if (!isLoggedIn) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SignIn()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

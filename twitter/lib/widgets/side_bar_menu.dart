@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twitter/models/user.dart';
+import 'package:twitter/providers/auth_state.dart';
+import 'package:twitter/screens/signin_screen.dart';
 
 class SideBarMenu extends StatefulWidget {
   const SideBarMenu({super.key});
@@ -8,12 +11,12 @@ class SideBarMenu extends StatefulWidget {
 }
 
 class _SideBarMenuState extends State<SideBarMenu> {
-  final String _username = 'Mxn';
-  final int _followers = 149;
-  final int _followings = 132;
+  User? _currentUser;
 
   @override
   Widget build(BuildContext context) {
+    Auth auth = Auth();
+    auth.getCurrentUserModel();
     return Drawer(
       child: ListView(
         children: [
@@ -32,7 +35,7 @@ class _SideBarMenuState extends State<SideBarMenu> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    _username,
+                    _currentUser?.displayName ?? '',
                     style: const TextStyle(
                       color: Color.fromRGBO(143, 143, 143, 0.5),
                       fontSize: 22,
@@ -44,14 +47,14 @@ class _SideBarMenuState extends State<SideBarMenu> {
                     child: Row(
                       children: [
                         Text(
-                          '$_followers Followers',
+                          '${_currentUser?.followers} Followers',
                           style: const TextStyle(
                             fontSize: 14
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '$_followings Following',
+                          '${_currentUser?.following} Following',
                           style: const TextStyle(
                             fontSize: 14
                           ),
@@ -148,8 +151,12 @@ class _SideBarMenuState extends State<SideBarMenu> {
                 fontWeight: FontWeight.bold
                 )
             ),
-            onTap: () {
-              print('Logout clicked');
+            onTap: () async {
+              await auth.logout();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SignIn())
+              );
             },
           ),
         ],

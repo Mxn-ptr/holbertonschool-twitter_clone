@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter/providers/auth_state.dart';
 import 'package:twitter/screens/forgot_password_screen.dart';
 import 'package:twitter/screens/singup_screen.dart';
 import 'package:twitter/widgets/bar_menu.dart';
@@ -53,6 +54,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    Auth auth = Auth();
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -77,7 +79,31 @@ class _SignInState extends State<SignIn> {
                 CustomEntryField(hint: 'Enter password', controller: _passwordController, isPassword: true),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: CustomFlatButton(label: 'Submit', onPressed: _navigateToBarMenu, fontSize: 40, fontWeight: FontWeight.bold),
+                  child: CustomFlatButton(
+                    label: 'Submit',
+                    onPressed: () async {
+                      final res = await auth.attemptLogin(_emailController.text, _passwordController.text);
+                      if (res == Errors.none) {
+                        _navigateToBarMenu();
+                      } else {
+                        String errorMessage = "";
+                        if (res == Errors.noUserError) {
+                          errorMessage = "No user found for that email!";
+                        } else if (res == Errors.wrongError) {
+                          errorMessage = "Wrong password!";
+                        } else if (res == Errors.error) {
+                          errorMessage = "Failed to Login! Please try later";
+                        } else {
+                          errorMessage = "You need to fill each field to submit";
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(errorMessage), backgroundColor: Colors.red,)
+                        );
+                      }
+                    },
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
